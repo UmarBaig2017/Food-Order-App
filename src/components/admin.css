@@ -17,3 +17,15 @@ body {
   #login .container #login-row #login-column #login-box #login-form #register-link {
     margin-top: -85px;
   }
+  .ordersList{
+    width: 50%;
+    border: khaki 2px solid;
+    padding: 20px;
+    margin:  0 auto
+  }
+  .EditOrder{
+    height: 50%;
+    width: 50%;
+    margin: 0 auto
+    
+  }

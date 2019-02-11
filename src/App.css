@@ -56,7 +56,7 @@ button:active{
   background:olive;
 }
 button:focus{
-  background:olive;
+  /* background:olive; */
 }
 .container{
   height: 100%;

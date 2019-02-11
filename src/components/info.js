@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import uuid from "uuid";
+import "./info.css";
+import Modal from 'react-responsive-modal';
 
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -15,10 +16,18 @@ class Info extends Component {
       name: "",
       Contect: "",
       Address: "",
-      isDone: false
+      modal: false,
+      Status: ""
     };
     this.handleChange = this.handleChange.bind(this);
+   
   }
+
+  onCloseModal = () => {
+    this.setState({ open: false });
+    this.props.history.push('/')
+  };
+ 
   componentDidMount() {
     console.log(this.props.Order);
     console.log(this.props.amount);
@@ -37,7 +46,7 @@ handleSubmit(e){
   let Address =this.state.Address
   let amt= this.props.amount
  let Oredrs={
-   id: uuid(),
+   
      ORD,
     name,
     Ph,
@@ -49,9 +58,27 @@ handleSubmit(e){
 //  data.push(Oredrs);
 // this.props.forder(data)
 console.log(Oredrs)
+fetch('http://localhost:8800/api/orders', {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(Oredrs)
+          }).then(res=>res.json()).then(data=>{
+              this.setState({
+                Status:"Thank You for Your Order",
+                open: true
+              })
+              
+
+          }).catch(err=>console.error(err));
+
+
 }
 
   render() {
+    const { open } = this.state;
     return (
       <div className="FinalOrder">
         <h1>Your Order</h1>
@@ -59,7 +86,7 @@ console.log(Oredrs)
         {this.props.Order.map((order, index) => {
           return (
             <div key={index} className="orderSlip">
-              {order.order.name} * {order.quant} = {order.FinalPrice}
+              {order.order.name} * {order.quant} = {order.finalPrice}
             </div>
           );
         })}
@@ -113,6 +140,20 @@ console.log(Oredrs)
           </button>
         </div>
         </form>
+        <div>
+       
+      </div>
+      <div>
+     
+      <Modal open={open} onClose={this.onCloseModal} center>
+        
+       <h1>{this.state.Status}</h1> 
+      </Modal>
+    </div>
+      <div>
+      </div>
+        
+  
       </div>
     );
   }

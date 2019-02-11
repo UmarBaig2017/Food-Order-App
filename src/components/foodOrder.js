@@ -6,7 +6,7 @@ import Modal from 'react-responsive-modal';
 import menu from "./menu";
 import { addOrder, calculateTotal } from "../store/action/action";
 
-let Orders = []
+
 class Foodorder extends Component {
     constructor(props) {
         super(props);
@@ -14,7 +14,8 @@ class Foodorder extends Component {
           quantity: 1,
          index: 1,
          open: false,
-         cart:[]
+         added:[],
+         Orders:[]
         };
         this.handleOrder= this.handleOrder.bind(this)
     }
@@ -28,24 +29,28 @@ class Foodorder extends Component {
 
 
     handleOrder(e,index){
+      let added = this.state.added
+      let Orders = this.state.Orders
+      added.push(index)
       let order = menu[index]
-    let FinalPrice= 0;
+    let finalPrice= 0;
     let quant= this.state.quantity
-    FinalPrice = order.price*quant
+    finalPrice = order.price*quant
   
 
     let finalOrder ={
       order,
       quant,
-      FinalPrice
+      finalPrice
     }
 
    Orders.push(finalOrder)
 
     console.log(Orders)
     this.setState({
-      quantity: 1
-
+      quantity: 1,
+      Orders,
+      added
     })
 
   }
@@ -61,11 +66,11 @@ class Foodorder extends Component {
 }
 handleSubmitt(){
  
- this.props.placeOrder(Orders)
+ this.props.placeOrder(this.state.Orders)
 
  let totalAmout=0
-Orders.map(order=>{
-  totalAmout+=order.FinalPrice
+this.state.Orders.map(order=>{
+  totalAmout+=order.finalPrice
  })
  this.props.calculateTotal(totalAmout)
 
@@ -90,10 +95,12 @@ Orders.map(order=>{
             <div className="row">
             <div className="col-md-3">
             
-            Quantity<input  onChange={(e)=>this.handleQuantity(e)} ref={'quantity'+index} type="number" defaultValue='1' name=""/>
+            Quantity<input  onChange={(e)=>this.handleQuantity(e)} min={1} ref={'quantity'+index} type="number" defaultValue='1' name=""/>
             </div>
             <div className="col-md-6">
-            <button onClick={(e)=>this.handleOrder(e,index)} className='btn btn-success'>Add Order</button>
+            {(this.state.added.includes(index))?
+              <button onClick={(e)=>this.handleOrder(e,index)} className='btn btn-danger' disabled>Added</button>:
+              <button onClick={(e)=>this.handleOrder(e,index)} className='btn btn-success'>Add Order</button>}
             </div>
             </div>
 

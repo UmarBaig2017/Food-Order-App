@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 
-import firebase from "firebase";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./admin.css";
 
@@ -58,7 +57,7 @@ handleLogin(e){
                         value={this.state.admin}
                         onChange={this.handleChange}
                         name="admin"
-                        type="text"
+                      
                         autoFocus="true"
                         
                       
@@ -71,7 +70,7 @@ handleLogin(e){
                       </label>
                       <br />
                       <input
-                        type="text"
+                       
                         value={this.state.pw}
                         onChange={this.handleChange}
                        
